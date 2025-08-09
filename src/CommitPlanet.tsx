@@ -11,6 +11,7 @@ type CommitPlanetProps = {
   color?: string
   size?: number                 // requested size (will be clamped)
   showRing?: boolean            // draw orbit ring
+  texture?: THREE.Texture       // optional surface texture
 }
 
 export default function CommitPlanet({
@@ -20,7 +21,8 @@ export default function CommitPlanet({
   orbitTilt = 0,
   color = '#00ffcc',
   size = 1,
-  showRing = true
+  showRing = true,
+  texture
 }: CommitPlanetProps) {
   const meshRef = useRef<THREE.Mesh>(null!)
   const angleRef = useRef(initialPhase)
@@ -46,7 +48,12 @@ export default function CommitPlanet({
       {showRing && <OrbitRing radius={orbitRadius} />}
       <mesh ref={meshRef}>
         <sphereGeometry args={[clampedSize, 32, 32]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.25} />
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.25}
+          map={texture}
+        />
       </mesh>
     </group>
   )
